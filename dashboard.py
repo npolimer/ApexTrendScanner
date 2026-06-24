@@ -2,10 +2,14 @@
 
 import pandas as pd
 import streamlit as st
+import subprocess
 
 st.set_page_config(layout="wide")
 
 st.title("Apex Trend Scanner")
+
+with st.spinner("Scanning Market..."):
+    subprocess.run(["python", "scanner.py"])
 
 df = pd.read_csv("output.csv")
 
