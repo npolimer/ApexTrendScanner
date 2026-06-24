@@ -8,8 +8,14 @@ st.set_page_config(layout="wide")
 
 st.title("Apex Trend Scanner")
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-st.write("Last Scan:", datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+ist_time = datetime.now(ZoneInfo("Asia/Kolkata"))
+
+st.write(
+    "Last Scan:",
+    ist_time.strftime("%d-%m-%Y %H:%M:%S IST")
+)
 
 with st.spinner("Scanning Market..."):
     subprocess.run(["python", "scanner.py"])
