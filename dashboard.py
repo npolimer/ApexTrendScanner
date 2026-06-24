@@ -24,19 +24,7 @@ st.write(
     "Last Scan:",
     ist_time.strftime("%d-%m-%Y %H:%M:%S IST")
 )
-    market_open = (
-    (ist_time.hour > 9 or (ist_time.hour == 9 and ist_time.minute >= 15))
-    and
-    (ist_time.hour < 15 or (ist_time.hour == 15 and ist_time.minute <= 30))
-)
-if market_open:
-    with st.spinner("Scanning Market..."):
-        result = subprocess.run(
-            ["python", "scanner.py"],
-            capture_output=True,
-            text=True
-        )
-
+  
 df = pd.read_csv("output.csv")
 
 bull = df[df["Direction"] == "BULL"]
