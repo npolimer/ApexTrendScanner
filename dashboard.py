@@ -3,22 +3,39 @@
 import pandas as pd
 import streamlit as st
 import subprocess
+from streamlit_autorefresh import st_autorefresh
 
 st.set_page_config(layout="wide")
 
 st.title("Apex Trend Scanner")
+
+# Auto refresh every 5 minutes
+st_autorefresh(
+    interval=300000,  # 300 seconds = 5 minutes
+    key="scanner_refresh"
+)
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 ist_time = datetime.now(ZoneInfo("Asia/Kolkata"))
 
-st.write(
-    "Last Scan:",
-    ist_time.strftime("%d-%m-%Y %H:%M:%S IST")
+market_open = (
+    (ist_time.hour > 9 or (ist_time.hour == 9 and ist_time.minute >= 15))
+    and
+    (ist_time.hour < 15 or (ist_time.hour == 15 and ist_time.minute <= 30))
 )
 
+if market_open:
+    with st.spinner("Scanning Market..."):
+        subprocess.run(["python", "scanner.py"])
+
 with st.spinner("Scanning Market..."):
-    subprocess.run(["python", "scanner.py"])
+    result = subprocess.run(
+        ["python", "scanner.py"],
+        capture_output=True,
+        text=True
+    )
 
 df = pd.read_csv("output.csv")
 
