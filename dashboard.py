@@ -7,6 +7,9 @@ import subprocess
 st.set_page_config(layout="wide")
 
 st.title("Apex Trend Scanner")
+from datetime import datetime
+
+st.write("Last Scan:", datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
 
 with st.spinner("Scanning Market..."):
     subprocess.run(["python", "scanner.py"])
